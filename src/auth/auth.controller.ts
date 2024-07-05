@@ -1,24 +1,26 @@
-import { Controller, Get, Post, Request, UseGuards } from "@nestjs/common";
+import { Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { AuthGuard } from "@nestjs/passport";
+import { LocalAuthGuard } from "./guards/local-auth.guard";
+import { Public, User } from "src/decorators/customises";
+import { Response } from "express";
+import { TUser } from "src/users/users.types";
 
 @Controller("auth")
 export class AuthController {
   constructor(private readonly authService: AuthService) {}
 
-  @UseGuards(AuthGuard("local"))
+  @UseGuards(LocalAuthGuard)
+  @Public()
   @Post("login")
-  login(@Request() req) {
-    return req.user;
+  login(@Req() req, @Res({ passthrough: true }) response: Response) {
+    return this.authService.login(req.user, response);
   }
 
   @Get("info")
-  info() {
+  info(@User() user: TUser) {
     return {
-      data: {
-        name: "John Doe",
-        email: "master@gmail.com",
-      },
+      data: user,
     };
   }
 
