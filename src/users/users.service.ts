@@ -5,7 +5,7 @@ import { InjectModel } from "@nestjs/mongoose";
 import { User } from "./schemas/user.schema";
 import { Model } from "mongoose";
 import { omit } from "lodash";
-import { getHashPassword } from "./users.util";
+import { getHashPassword } from "src/utils/auths.util";
 
 @Injectable()
 export class UsersService {
@@ -33,6 +33,12 @@ export class UsersService {
 
   findOne(id: string) {
     return `This action returns a #${id} user`;
+  }
+
+  findByUsername(username: string) {
+    return this.userModel.findOne({
+      username,
+    });
   }
 
   update(id: string, updateUserDto: UpdateUserDto) {
