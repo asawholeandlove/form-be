@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
-import { Public, User } from "src/decorators/customises";
+import { Public, ResponseMessage, User } from "src/decorators/customises";
 import { Request, Response } from "express";
 import { TUser } from "src/users/users.types";
 
@@ -12,15 +12,15 @@ export class AuthController {
   @UseGuards(LocalAuthGuard)
   @Public()
   @Post("login")
+  @ResponseMessage("Đăng nhập thành công")
   login(@Req() req, @Res({ passthrough: true }) response: Response) {
     return this.authService.login(req.user, response);
   }
 
   @Get("info")
+  @ResponseMessage("Thông tin người dùng")
   info(@User() user: TUser) {
-    return {
-      data: user,
-    };
+    return user;
   }
 
   @Public()

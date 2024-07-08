@@ -4,8 +4,8 @@ import { JwtService } from "@nestjs/jwt";
 import { compareSync } from "bcryptjs";
 import { Response } from "express";
 import { omit } from "lodash";
-import { UsersService } from "src/users/users.service";
 import ms from "ms";
+import { UsersService } from "src/users/users.service";
 import { TUser } from "src/users/users.types";
 
 @Injectable()
@@ -63,10 +63,8 @@ export class AuthService {
     });
 
     return {
-      data: {
-        user,
-        accessToken,
-      },
+      user,
+      accessToken,
     };
   }
 

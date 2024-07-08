@@ -4,6 +4,7 @@ import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtAuthGuard } from "./auths/guards/jwt-auth.guard";
 import cookieParser from "cookie-parser";
+import { TransformInterceptor } from "./cores/transform.interceptor";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
@@ -17,6 +18,9 @@ async function bootstrap() {
     preflightContinue: false,
     credentials: true,
   });
+
+  // Global transform interceptor
+  app.useGlobalInterceptors(new TransformInterceptor(reflector));
 
   // Global jwt guard
   app.useGlobalGuards(new JwtAuthGuard(reflector));

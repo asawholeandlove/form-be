@@ -26,6 +26,16 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
   }
 
   handleRequest(err, user, info, context, status) {
+    const msg: string = info?.message || "";
+
+    if (msg === "No auth token") {
+      throw new UnauthorizedException({
+        statusCode: HttpStatus.UNAUTHORIZED,
+        message: "Token is required",
+        errorCode: "TOKEN_REQUIRED",
+      });
+    }
+
     if (err || !user) {
       throw new UnauthorizedException({
         statusCode: HttpStatus.UNAUTHORIZED,
