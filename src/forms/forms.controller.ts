@@ -28,16 +28,16 @@ export class FormsController {
 
   @Get(":id")
   findOne(@Param("id") id: string) {
-    return this.formsService.findOne(+id);
+    return this.formsService.findOne(id);
   }
 
   @Patch(":id")
   update(@Param("id") id: string, @Body() updateFormDto: UpdateFormDto) {
-    return this.formsService.update(+id, updateFormDto);
+    return this.formsService.update(id, updateFormDto);
   }
 
   @Delete(":id")
   remove(@Param("id") id: string) {
-    return this.formsService.remove(+id);
+    return this.formsService.remove(id);
   }
 }

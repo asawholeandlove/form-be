@@ -17,6 +17,14 @@ export class FormsService {
     }
   }
 
+  async findById(id: string) {
+    const form = await this.formModel.findById(id);
+    if (!form) {
+      throw new BadRequestException(`Form with id ${id} not found`);
+    }
+    return form;
+  }
+
   async create(createFormDto: CreateFormDto) {
     const { title } = createFormDto;
     await this.checkFormExist(title);
@@ -29,17 +37,29 @@ export class FormsService {
     return handleFilter(this.formModel.find(), query);
   }
 
-  findOne(id: number) {
-    return `This action returns a #${id} form`;
+  findOne(id: string) {
+    return this.findById(id);
   }
 
-  async update(id: number, updateFormDto: UpdateFormDto) {
+  async update(id: string, updateFormDto: UpdateFormDto) {
+    const found = await this.findById(id);
     const { title } = updateFormDto;
-    await this.checkFormExist(title);
-    return `This action updates a #${id} form`;
+
+    if (title !== found.title) {
+      await this.checkFormExist(title);
+    }
+    return this.formModel.updateOne(
+      {
+        _id: id,
+      },
+      updateFormDto,
+    );
   }
 
-  remove(id: number) {
-    return `This action removes a #${id} form`;
+  async remove(id: string) {
+    await this.findById(id);
+    return this.formModel.deleteOne({
+      _id: id,
+    });
   }
 }

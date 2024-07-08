@@ -33,7 +33,7 @@ export const handleFilter = async <T>(
   // Apply other search criteria
   Object.entries(others).forEach(([key, value]) => {
     if (value) {
-      _query.where(key).equals(value);
+      _query.where(key).regex(new RegExp(value.toString(), "i")); // 'i' for case-insensitive matching
     }
   });
 
