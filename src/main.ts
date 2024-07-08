@@ -2,7 +2,7 @@ import { NestFactory, Reflector } from "@nestjs/core";
 import { AppModule } from "./app.module";
 import { ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
-import { JwtAuthGuard } from "./auth/guards/jwt-auth.guard";
+import { JwtAuthGuard } from "./auths/guards/jwt-auth.guard";
 import cookieParser from "cookie-parser";
 
 async function bootstrap() {
@@ -12,8 +12,10 @@ async function bootstrap() {
 
   // Cors
   app.enableCors({
-    origin: "*",
+    origin: true,
     methods: "GET,HEAD,PUT,PATCH,POST,DELETE",
+    preflightContinue: false,
+    credentials: true,
   });
 
   // Global jwt guard

@@ -1,5 +1,6 @@
 import {
   ExecutionContext,
+  HttpStatus,
   Injectable,
   UnauthorizedException,
 } from "@nestjs/common";
@@ -24,10 +25,13 @@ export class JwtAuthGuard extends AuthGuard("jwt") {
     return super.canActivate(context);
   }
 
-  handleRequest(err, user, info) {
-    // You can throw an exception based on either "info" or "err" arguments
+  handleRequest(err, user, info, context, status) {
     if (err || !user) {
-      throw err || new UnauthorizedException();
+      throw new UnauthorizedException({
+        statusCode: HttpStatus.UNAUTHORIZED,
+        message: "Token is invalid or expired",
+        errorCode: "INVALID_TOKEN",
+      });
     }
     return user;
   }

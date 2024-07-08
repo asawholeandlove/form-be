@@ -41,6 +41,16 @@ export class UsersService {
     });
   }
 
+  findByRefreshToken(refreshToken: string) {
+    return this.userModel.findOne({
+      refreshToken,
+    });
+  }
+
+  updateRefreshToken(username: string, refreshToken: string) {
+    return this.userModel.updateOne({ username }, { refreshToken });
+  }
+
   update(id: string, updateUserDto: UpdateUserDto) {
     const omittedUser = omit(updateUserDto, ["password", "username"]);
     return this.userModel.updateOne({ _id: id }, omittedUser);

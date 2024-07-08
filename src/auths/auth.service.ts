@@ -1,4 +1,4 @@
-import { Injectable } from "@nestjs/common";
+import { BadRequestException, Injectable } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtService } from "@nestjs/jwt";
 import { compareSync } from "bcryptjs";
@@ -6,6 +6,7 @@ import { Response } from "express";
 import { omit } from "lodash";
 import { UsersService } from "src/users/users.service";
 import ms from "ms";
+import { TUser } from "src/users/users.types";
 
 @Injectable()
 export class AuthService {
@@ -17,7 +18,7 @@ export class AuthService {
 
   async validateUser(username: string, password: string) {
     const user = await this.userService.findByUsername(username);
-    const hashedPassword = user.password;
+    const hashedPassword = user?.password;
 
     if (user && compareSync(password, hashedPassword)) {
       const omittedUser = omit(user, ["password"]);
@@ -45,9 +46,15 @@ export class AuthService {
     return token;
   }
 
-  async login(user: any, response: Response) {
+  async processToken(user: TUser, response: Response) {
+    const { username } = user;
+
     const accessToken = this.createToken("access", user);
     const refreshToken = this.createToken("refresh", user);
+
+    await this.userService.updateRefreshToken(username, refreshToken);
+
+    response.clearCookie("refreshToken");
 
     // Set the refresh token in the cookie
     response.cookie("refreshToken", refreshToken, {
@@ -61,5 +68,26 @@ export class AuthService {
         accessToken,
       },
     };
+  }
+
+  async login(user: TUser, response: Response) {
+    return await this.processToken(user, response);
+  }
+
+  async refreshToken(refreshToken: string, response: Response) {
+    try {
+      this.jwtService.verify(refreshToken, {
+        secret: this.configService.get<string>("REFRESH_TOKEN_SECRET"),
+      });
+
+      const user = await this.userService.findByRefreshToken(refreshToken);
+
+      if (!user) {
+        throw new BadRequestException("Refresh token không hợp lệ");
+      }
+      return await this.processToken(user, response);
+    } catch (error) {
+      throw new BadRequestException("Refresh token không hợp lệ");
+    }
   }
 }

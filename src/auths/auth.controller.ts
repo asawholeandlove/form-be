@@ -1,9 +1,8 @@
 import { Controller, Get, Post, Req, Res, UseGuards } from "@nestjs/common";
 import { AuthService } from "./auth.service";
-import { AuthGuard } from "@nestjs/passport";
 import { LocalAuthGuard } from "./guards/local-auth.guard";
 import { Public, User } from "src/decorators/customises";
-import { Response } from "express";
+import { Request, Response } from "express";
 import { TUser } from "src/users/users.types";
 
 @Controller("auth")
@@ -22,6 +21,16 @@ export class AuthController {
     return {
       data: user,
     };
+  }
+
+  @Public()
+  @Get("refresh-token")
+  refreshToken(
+    @Req() req: Request,
+    @Res({ passthrough: true }) response: Response,
+  ) {
+    const refreshToken = req.cookies["refreshToken"];
+    return this.authService.refreshToken(refreshToken, response);
   }
 
   @Post("register")
