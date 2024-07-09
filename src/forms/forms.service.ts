@@ -18,27 +18,38 @@ export class FormsService {
   }
 
   async findById(id: string) {
-    const form = await this.formModel.findById(id);
+    const form = await this.formModel.findById(id).populate("createdBy");
+
     if (!form) {
       throw new BadRequestException(`Form with id ${id} not found`);
     }
+
     return form;
   }
 
-  async create(createFormDto: CreateFormDto) {
+  async create(createFormDto: CreateFormDto, user: any) {
     const { title } = createFormDto;
     await this.checkFormExist(title);
 
-    const createdForm = new this.formModel(createFormDto);
+    const createdForm = new this.formModel({
+      ...createFormDto,
+      createdBy: user,
+    });
     return createdForm.save();
   }
 
   findAll(query: any) {
-    return handleFilter(this.formModel.find(), query);
+    return handleFilter(this.formModel.find().populate("createdBy"), query);
   }
 
-  findOne(id: string) {
-    return this.findById(id);
+  async findOne(id: string) {
+    const form = await this.findById(id);
+    return form;
+    return {
+      ...form.toObject(),
+      createdById: (form.createdBy as any)._id,
+      createdByUsername: form.createdBy.username,
+    };
   }
 
   async update(id: string, updateFormDto: UpdateFormDto) {

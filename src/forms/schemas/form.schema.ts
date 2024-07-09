@@ -1,6 +1,8 @@
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { HydratedDocument } from "mongoose";
+import { Type } from "class-transformer";
+import mongoose, { HydratedDocument } from "mongoose";
 import { FieldType } from "src/constants/forms.constant";
+import { User, UserSchema } from "src/users/schemas/user.schema";
 
 export type FormDocument = HydratedDocument<Form>;
 
@@ -19,7 +21,11 @@ class Field {
   options?: string[];
 }
 
-@Schema({ timestamps: true })
+@Schema({
+  timestamps: true,
+  toJSON: { virtuals: true },
+  toObject: { virtuals: true },
+})
 export class Form {
   @Prop({ required: true })
   title: string;
@@ -29,6 +35,20 @@ export class Form {
 
   @Prop([Field])
   fields: Field[];
+
+  @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
+  @Type(() => User)
+  createdBy: User;
 }
 
-export const FormSchema = SchemaFactory.createForClass(Form);
+const FormSchema = SchemaFactory.createForClass(Form);
+
+FormSchema.virtual("createdById").get(function () {
+  return this.createdBy ? (this.createdBy as any)._id : null;
+});
+
+FormSchema.virtual("createdByUsername").get(function () {
+  return this.createdBy ? this.createdBy.username : null;
+});
+
+export { FormSchema };

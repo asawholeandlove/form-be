@@ -28,11 +28,11 @@ export class UsersService {
   }
 
   findAll() {
-    return `This action returns all users`;
+    return this.userModel.find().select("-password");
   }
 
   findOne(id: string) {
-    return `This action returns a #${id} user`;
+    return this.userModel.findById(id).select("-password");
   }
 
   findByUsername(username: string) {

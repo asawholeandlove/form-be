@@ -27,10 +27,10 @@ export class AuthService {
     return null;
   }
 
-  createToken(type: "access" | "refresh", user: any) {
-    const { username } = user;
+  createToken(type: "access" | "refresh", user: TUser) {
+    const { username, _id } = user;
 
-    const payload = { sub: `${type} token`, username };
+    const payload = { sub: `${type} token`, username, _id };
     const token = this.jwtService.sign(payload, {
       secret:
         type === "access"
@@ -83,7 +83,7 @@ export class AuthService {
       if (!user) {
         throw new BadRequestException("Refresh token không hợp lệ");
       }
-      return await this.processToken(user, response);
+      return await this.processToken(user as any, response);
     } catch (error) {
       throw new BadRequestException("Refresh token không hợp lệ");
     }

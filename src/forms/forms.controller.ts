@@ -11,14 +11,15 @@ import {
 import { FormsService } from "./forms.service";
 import { CreateFormDto } from "./dto/create-form.dto";
 import { UpdateFormDto } from "./dto/update-form.dto";
+import { User } from "src/decorators/customises";
 
 @Controller("forms")
 export class FormsController {
   constructor(private readonly formsService: FormsService) {}
 
   @Post()
-  create(@Body() createFormDto: CreateFormDto) {
-    return this.formsService.create(createFormDto);
+  create(@Body() createFormDto: CreateFormDto, @User() user: any) {
+    return this.formsService.create(createFormDto, user);
   }
 
   @Get()

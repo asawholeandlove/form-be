@@ -1,6 +1,6 @@
 import { NestFactory, Reflector } from "@nestjs/core";
 import { AppModule } from "./app.module";
-import { ValidationPipe } from "@nestjs/common";
+import { ClassSerializerInterceptor, ValidationPipe } from "@nestjs/common";
 import { ConfigService } from "@nestjs/config";
 import { JwtAuthGuard } from "./auths/guards/jwt-auth.guard";
 import cookieParser from "cookie-parser";
@@ -30,6 +30,7 @@ async function bootstrap() {
 
   // Validate data using class-validator
   app.useGlobalPipes(new ValidationPipe());
+
   await app.listen(configService.get<string>("PORT"));
 }
 
