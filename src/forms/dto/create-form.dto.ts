@@ -38,8 +38,6 @@ export class CreateFormDto {
   @IsNotEmpty()
   title: string;
 
-  @IsString()
-  @IsNotEmpty()
   description: string;
 
   @IsArray()

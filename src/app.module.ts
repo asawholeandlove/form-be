@@ -6,6 +6,7 @@ import { MongooseModule } from "@nestjs/mongoose";
 import { UsersModule } from "./users/users.module";
 import { ConfigModule } from "@nestjs/config";
 import { FormsModule } from "./forms/forms.module";
+import { SubmissionsModule } from './submissions/submissions.module';
 
 @Module({
   imports: [
@@ -19,6 +20,7 @@ import { FormsModule } from "./forms/forms.module";
     AuthModule,
     UsersModule,
     FormsModule,
+    SubmissionsModule,
   ],
   controllers: [AppController],
   providers: [AppService],

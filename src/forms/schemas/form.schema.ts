@@ -7,7 +7,7 @@ import { User, UserSchema } from "src/users/schemas/user.schema";
 export type FormDocument = HydratedDocument<Form>;
 
 @Schema()
-class Field {
+export class Field {
   @Prop({ required: true, enum: FieldType })
   type: string;
 
@@ -30,11 +30,14 @@ export class Form {
   @Prop({ required: true })
   title: string;
 
-  @Prop({ required: true })
+  @Prop()
   description: string;
 
   @Prop([Field])
   fields: Field[];
+
+  @Prop({ default: true })
+  isPublic: boolean;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   @Type(() => User)

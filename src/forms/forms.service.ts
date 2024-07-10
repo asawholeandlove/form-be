@@ -45,11 +45,6 @@ export class FormsService {
   async findOne(id: string) {
     const form = await this.findById(id);
     return form;
-    return {
-      ...form.toObject(),
-      createdById: (form.createdBy as any)._id,
-      createdByUsername: form.createdBy.username,
-    };
   }
 
   async update(id: string, updateFormDto: UpdateFormDto) {
