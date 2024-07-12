@@ -1,16 +1,20 @@
+import { UseInterceptors } from "@nestjs/common";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Type } from "class-transformer";
-import mongoose, { HydratedDocument } from "mongoose";
-import { FieldType } from "src/constants/forms.constant";
-import { User, UserSchema } from "src/users/schemas/user.schema";
+import { Exclude, Expose, Transform, Type } from "class-transformer";
+import mongoose, { HydratedDocument, ObjectId } from "mongoose";
+import { TFieldType } from "src/constants/forms.constant";
+import { User } from "src/users/schemas/user.schema";
 
 export type FormDocument = HydratedDocument<Form>;
 
 @Schema()
 export class Field {
-  @Prop({ required: true, enum: FieldType })
+  _id: ObjectId;
+
+  @Prop({ required: true, enum: TFieldType })
   type: string;
 
+  @Exclude()
   @Prop({ required: true })
   label: string;
 
@@ -27,6 +31,8 @@ export class Field {
   toObject: { virtuals: true },
 })
 export class Form {
+  _id: ObjectId;
+
   @Prop({ required: true })
   title: string;
 
@@ -39,9 +45,14 @@ export class Form {
   @Prop({ default: true })
   isPublic: boolean;
 
+  @Exclude()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   @Type(() => User)
   createdBy: User;
+
+  @Prop()
+  @Transform(({ value }) => "hihi")
+  updatedAt: string;
 }
 
 const FormSchema = SchemaFactory.createForClass(Form);

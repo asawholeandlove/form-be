@@ -1,4 +1,4 @@
-export enum FieldType {
+export enum TFieldType {
   INPUT = "INPUT",
   TEXTAREA = "TEXTAREA",
   DATE = "DATE",

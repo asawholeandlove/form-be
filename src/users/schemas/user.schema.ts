@@ -1,3 +1,4 @@
+import { UseInterceptors } from "@nestjs/common";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
 import { Exclude } from "class-transformer";
 import { HydratedDocument } from "mongoose";
@@ -11,6 +12,7 @@ export class User {
   })
   username: string;
 
+  @Exclude()
   @Prop({
     required: true,
   })
@@ -19,6 +21,7 @@ export class User {
   @Prop()
   phone: string;
 
+  @Exclude()
   @Prop()
   refreshToken: string;
 }

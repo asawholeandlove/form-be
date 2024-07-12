@@ -10,12 +10,12 @@ import {
   ValidateNested,
   isEnum,
 } from "class-validator";
-import { FieldType } from "src/constants/forms.constant";
+import { TFieldType } from "src/constants/forms.constant";
 
 class FieldDto {
-  @IsEnum(FieldType)
+  @IsEnum(TFieldType)
   @IsNotEmpty()
-  type: FieldType;
+  type: TFieldType;
 
   @IsString()
   @IsNotEmpty()

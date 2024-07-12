@@ -5,6 +5,8 @@ import { ConfigService } from "@nestjs/config";
 import { JwtAuthGuard } from "./auths/guards/jwt-auth.guard";
 import cookieParser from "cookie-parser";
 import { TransformInterceptor } from "./cores/transform.interceptor";
+import MongooseClassSerializerInterceptor from "./cores/mongooseClassSerializer.interceptor";
+import { User } from "./users/schemas/user.schema";
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
