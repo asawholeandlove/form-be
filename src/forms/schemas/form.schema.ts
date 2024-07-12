@@ -45,7 +45,6 @@ export class Form {
   @Prop({ default: true })
   isPublic: boolean;
 
-  @Exclude()
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   @Type(() => User)
   createdBy: User;

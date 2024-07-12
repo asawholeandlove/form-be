@@ -18,7 +18,7 @@ import MongooseClassSerializerInterceptor from "src/cores/mongooseClassSerialize
 import { Form } from "./schemas/form.schema";
 
 @Controller("forms")
-@UseInterceptors(MongooseClassSerializerInterceptor(Form))
+// @UseInterceptors(MongooseClassSerializerInterceptor(Form))
 export class FormsController {
   constructor(private readonly formsService: FormsService) {}
 

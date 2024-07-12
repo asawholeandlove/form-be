@@ -16,19 +16,19 @@ function MongooseClassSerializerInterceptor(
         return document;
       }
 
-      const plainObject = this.convertObjectIds(document.toJSON());
+      const plainObject = this?.convertObjectIds(document.toJSON());
       return plainToClass(classToIntercept, plainObject);
     }
 
     private convertObjectIds(obj: any): any {
       if (Array.isArray(obj)) {
-        return obj.map((item) => this.convertObjectIds(item));
+        return obj.map((item) => this?.convertObjectIds(item));
       } else if (obj && typeof obj === "object") {
         for (const key of Object.keys(obj)) {
           if (obj[key] instanceof mongoose.Types.ObjectId) {
             obj[key] = obj[key].toString();
           } else if (typeof obj[key] === "object") {
-            obj[key] = this.convertObjectIds(obj[key]);
+            obj[key] = this?.convertObjectIds(obj[key]);
           }
         }
       }
