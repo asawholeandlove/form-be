@@ -30,6 +30,7 @@ export class AuthController {
     @Res({ passthrough: true }) response: Response,
   ) {
     const refreshToken = req.cookies["refreshToken"];
+
     return this.authService.refreshToken(refreshToken, response);
   }
 

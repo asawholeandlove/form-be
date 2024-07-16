@@ -27,6 +27,8 @@ class FieldDto {
   })
   required: boolean;
 
+  defaultValue?: string;
+
   @IsOptional()
   @IsArray()
   @IsString({ each: true })

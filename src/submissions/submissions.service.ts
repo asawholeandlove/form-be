@@ -18,6 +18,9 @@ export class SubmissionsService {
     const { form, answers: answersOri } = createSubmissionDto;
 
     const formExist = await this.formModel.findById(form);
+    if (!formExist) {
+      throw new BadRequestException(`Form with id ${form} not found`);
+    }
     const formObj = formExist.toObject();
 
     // modify answers to include field details

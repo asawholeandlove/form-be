@@ -13,7 +13,7 @@ import {
 import { FormsService } from "./forms.service";
 import { CreateFormDto } from "./dto/create-form.dto";
 import { UpdateFormDto } from "./dto/update-form.dto";
-import { User } from "src/decorators/customises";
+import { Public, User } from "src/decorators/customises";
 import MongooseClassSerializerInterceptor from "src/cores/mongooseClassSerializer.interceptor";
 import { Form } from "./schemas/form.schema";
 
@@ -32,6 +32,7 @@ export class FormsController {
     return this.formsService.findAll(query);
   }
 
+  @Public()
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.formsService.findOne(id);

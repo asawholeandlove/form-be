@@ -10,11 +10,13 @@ import {
 import { SubmissionsService } from "./submissions.service";
 import { CreateSubmissionDto } from "./dto/create-submission.dto";
 import { UpdateSubmissionDto } from "./dto/update-submission.dto";
+import { Public } from "src/decorators/customises";
 
 @Controller("submissions")
 export class SubmissionsController {
   constructor(private readonly submissionsService: SubmissionsService) {}
 
+  @Public()
   @Post()
   create(@Body() createSubmissionDto: CreateSubmissionDto) {
     return this.submissionsService.create(createSubmissionDto);
@@ -25,6 +27,7 @@ export class SubmissionsController {
     return this.submissionsService.findAll();
   }
 
+  @Public()
   @Get(":id")
   findOne(@Param("id") id: string) {
     return this.submissionsService.findOne(id);

@@ -1,6 +1,5 @@
-import { UseInterceptors } from "@nestjs/common";
 import { Prop, Schema, SchemaFactory } from "@nestjs/mongoose";
-import { Exclude, Expose, Transform, Type } from "class-transformer";
+import { Exclude, Type } from "class-transformer";
 import mongoose, { HydratedDocument, ObjectId } from "mongoose";
 import { TFieldType } from "src/constants/forms.constant";
 import { User } from "src/users/schemas/user.schema";
@@ -20,6 +19,9 @@ export class Field {
 
   @Prop({ required: true })
   required: boolean;
+
+  @Prop()
+  defaultValue?: string;
 
   @Prop([String])
   options?: string[];
@@ -49,9 +51,9 @@ export class Form {
   @Type(() => User)
   createdBy: User;
 
-  @Prop()
-  @Transform(({ value }) => "hihi")
-  updatedAt: string;
+  // @Prop()
+  // @Transform(({ value }) => "hihi")
+  // updatedAt: string;
 }
 
 const FormSchema = SchemaFactory.createForClass(Form);
