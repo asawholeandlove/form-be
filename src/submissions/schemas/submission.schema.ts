@@ -14,6 +14,12 @@ export class FieldAnswer extends Field {
   value: any | any[];
 }
 
+@Schema()
+export class ClientInfo {
+  @Prop()
+  ip?: string;
+}
+
 @Schema({
   timestamps: true,
 })
@@ -28,6 +34,12 @@ export class Submission {
 
   @Prop([FieldAnswer])
   answers: FieldAnswer[];
+
+  @Prop({ type: ClientInfo })
+  client?: ClientInfo;
+
+  @Prop({ type: mongoose.Schema.Types.Mixed })
+  extra?: any;
 }
 
 const SubmissionSchema = SchemaFactory.createForClass(Submission);

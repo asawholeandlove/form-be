@@ -27,6 +27,11 @@ export class SubmissionsController {
     return this.submissionsService.findAll();
   }
 
+  @Get("byForm/:id")
+  findByFormId(@Param("id") id: string) {
+    return this.submissionsService.findByFormId(id);
+  }
+
   @Public()
   @Get(":id")
   findOne(@Param("id") id: string) {

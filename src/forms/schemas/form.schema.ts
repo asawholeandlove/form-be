@@ -27,6 +27,15 @@ export class Field {
   options?: string[];
 }
 
+@Schema()
+class Page {
+  @Prop()
+  content?: string;
+
+  @Prop()
+  isShow?: boolean;
+}
+
 @Schema({
   timestamps: true,
   toJSON: { virtuals: true },
@@ -44,8 +53,14 @@ export class Form {
   @Prop([Field])
   fields: Field[];
 
-  @Prop({ default: true })
+  @Prop()
   isPublic: boolean;
+
+  @Prop({ type: Page })
+  startPage?: Page;
+
+  @Prop({ type: Page })
+  endPage?: Page;
 
   @Prop({ type: mongoose.Schema.Types.ObjectId, ref: User.name })
   @Type(() => User)

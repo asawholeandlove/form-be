@@ -6,7 +6,6 @@ class FieldAnswerDto {
   @IsNotEmpty()
   fieldId: string;
 
-  @IsNotEmpty()
   value: any | any[];
 }
 

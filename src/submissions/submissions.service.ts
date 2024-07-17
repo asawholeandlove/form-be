@@ -64,6 +64,13 @@ export class SubmissionsService {
     return `This action returns all submissions`;
   }
 
+  findByFormId(id: string) {
+    return this.submissionModel
+      .find({ form: id })
+      .populate("form")
+      .sort({ createdAt: -1 });
+  }
+
   async findOne(id: string) {
     return await this.submissionModel.findById(id).populate("form");
   }

@@ -39,7 +39,12 @@ export class FormsService {
   }
 
   findAll(query: any) {
-    return handleFilter(this.formModel.find().populate("createdBy"), query);
+    return handleFilter(
+      this.formModel.find().populate("createdBy").sort({
+        createdAt: -1,
+      }),
+      query,
+    );
   }
 
   async findOne(id: string) {
